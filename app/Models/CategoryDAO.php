@@ -311,8 +311,11 @@ SQL;
 
 	/** @return array<FreshRSS_Category> */
 	public function listCategoriesOrderUpdate(int $defaultCacheDuration = 86400, int $limit = 0): array {
-		$sql = 'SELECT * FROM `_category` WHERE kind = :kind AND `lastUpdate` < :lu ORDER BY `lastUpdate`'
-			. ($limit < 1 ? '' : ' LIMIT ' . $limit);
+		$sql = 'SELECT * FROM `_category` WHERE kind = :kind AND `lastUpdate` < :lu ORDER BY `lastUpdate`;
+		if ($limit > 1) {
+			$sql = 'SELECT * FROM `_category` WHERE kind = :kind AND `lastUpdate` < :lu ORDER BY `lastUpdate` LIMIT :limit';
+			$stm->bindValue(':limit', $limit, PDO::PARAM_INT);
+		}
 		$stm = $this->pdo->prepare($sql);
 		if ($stm &&
 			$stm->bindValue(':kind', FreshRSS_Category::KIND_DYNAMIC_OPML, PDO::PARAM_INT) &&
