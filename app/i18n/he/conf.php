@@ -32,6 +32,7 @@ return array(
 	),
 	'display' => array(
 		'_' => 'תצוגה',
+		'darkMode' => 'Automatic dark mode (beta)',	// TODO
 		'icon' => array(
 			'bottom_line' => 'שורה תחתונה',
 			'display_authors' => 'Authors',	// TODO
@@ -48,7 +49,13 @@ return array(
 			'timeout' => 'HTML5 התראה פג תוקף',
 		),
 		'show_nav_buttons' => 'Show the navigation buttons',	// TODO
-		'theme' => 'ערכת נושא',
+		'theme' => array(
+			'_' => 'ערכת נושא',
+			'deprecated' => array(
+				'_' => 'Deprecated',	// TODO
+				'description' => 'This theme is no longer supported and will be not available anymore in a <a href="https://freshrss.github.io/FreshRSS/en/users/05_Configuration.html#theme" target="_blank">future release of FreshRSS</a>',	// TODO
+			),
+		),
 		'theme_not_available' => 'The “%s” theme is not available anymore. Please choose another theme.',	// TODO
 		'thumbnail' => array(
 			'label' => 'Thumbnail',	// TODO
@@ -57,6 +64,7 @@ return array(
 			'portrait' => 'Portrait',	// TODO
 			'square' => 'Square',	// TODO
 		),
+		'timezone' => 'Time zone',	// TODO
 		'title' => 'תצוגה',
 		'width' => array(
 			'content' => 'רוחב התוכן',
@@ -102,11 +110,11 @@ return array(
 			'order' => 'Sort by date',	// TODO
 			'search' => 'Expression',	// TODO
 			'state' => 'State',	// TODO
-			'tags' => 'Display by tag',	// TODO
+			'tags' => 'Display by label',	// TODO
 			'type' => 'Type',	// TODO
 		),
 		'get_all' => 'הצגת כל המאמרים',
-		'get_category' => 'הצגת קטגוריה "%s"',
+		'get_category' => 'הצגת קטגוריה “%s”',
 		'get_favorite' => 'הצגת מאמרים מועדפים',
 		'get_feed' => 'הצגת הזנה %s',
 		'name' => 'Name',	// TODO
@@ -114,7 +122,7 @@ return array(
 		'number' => 'שאילתה מספר °%d',
 		'order_asc' => 'הצגת מאמרים ישנים בראש',
 		'order_desc' => 'הצגת מאמרים חדשים בראש',
-		'search' => 'חיפוש "%s"',
+		'search' => 'חיפוש “%s”',
 		'state_0' => 'הצגת כל המאמרים',
 		'state_1' => 'הצגת מאמרים שנקראו',
 		'state_2' => 'הצגת מאמרים שלא נקראו',

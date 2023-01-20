@@ -60,7 +60,6 @@ function is_valid_path_extension($path, $extensionPath, $isStatic = true) {
 
 	// Static files to serve must be under a `ext_dir/static/` directory.
 	$path_relative_to_ext = substr($path, strlen($real_ext_path) + 1);
-	// @phpstan-ignore-next-line
 	list(,$static,$file) = sscanf($path_relative_to_ext, '%[^/]/%[^/]/%s');
 	if (null === $file || 'static' !== $static) {
 		return false;
@@ -101,7 +100,8 @@ if (!isset($_GET['f']) ||
 
 $file_name = urldecode($_GET['f']);
 $file_type = $_GET['t'];
-if (empty(SUPPORTED_TYPES[$file_type])) {
+if (empty(SUPPORTED_TYPES[$file_type]) ||
+	empty(SUPPORTED_TYPES[pathinfo($file_name, PATHINFO_EXTENSION)])) {
 	sendBadRequestResponse('File type is not supported.');
 }
 

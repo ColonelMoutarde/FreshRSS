@@ -162,7 +162,7 @@ $today = @strtotime('today');
 					<?php } ?>
 				</header>
 				<div class="text"><?php
-					echo $lazyload && $hidePosts ? lazyimg($this->entry->content()) : $this->entry->content();
+					echo $lazyload && $hidePosts ? lazyimg($this->entry->content(true)) : $this->entry->content(true);
 				?></div>
 				<?php
 				$display_authors_date = FreshRSS_Context::$user_conf->show_author_date === 'f' || FreshRSS_Context::$user_conf->show_author_date === 'b';
@@ -261,7 +261,7 @@ $today = @strtotime('today');
 <?php endif; ?>
 
 <?php $class = $this->displaySlider ? ' active' : ''; ?>
-<aside id="slider" class="scrollbar-thin<?= $class ?>">
+<aside id="slider" class="<?= $class ?>">
 	<a class="toggle_aside" href="#close"><img class="icon" src="../themes/icons/close.svg" loading="lazy" alt="❌"></a>
 		<div id="slider-content">
 		</div>

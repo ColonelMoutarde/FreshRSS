@@ -32,6 +32,7 @@ return array(
 	),
 	'display' => array(
 		'_' => '表示',
+		'darkMode' => 'Automatic dark mode (beta)',	// TODO
 		'icon' => array(
 			'bottom_line' => '行の下部',
 			'display_authors' => '著者',
@@ -48,7 +49,13 @@ return array(
 			'timeout' => 'HTML5 の通知タイムアウト時間',
 		),
 		'show_nav_buttons' => 'ナビゲーションボタンを表示する',
-		'theme' => 'テーマ',
+		'theme' => array(
+			'_' => 'テーマ',
+			'deprecated' => array(
+				'_' => 'Deprecated',	// TODO
+				'description' => 'This theme is no longer supported and will be not available anymore in a <a href="https://freshrss.github.io/FreshRSS/en/users/05_Configuration.html#theme" target="_blank">future release of FreshRSS</a>',	// TODO
+			),
+		),
 		'theme_not_available' => '“%s”テーマはご利用いただけません。他のテーマをお選びください。',
 		'thumbnail' => array(
 			'label' => 'サムネイル',
@@ -57,6 +64,7 @@ return array(
 			'portrait' => 'ポートレート',
 			'square' => '四角',
 		),
+		'timezone' => 'Time zone',	// TODO
 		'title' => 'ディスプレイ',
 		'width' => array(
 			'content' => 'コンテンツ幅',
@@ -106,15 +114,15 @@ return array(
 			'type' => 'タイプ',
 		),
 		'get_all' => 'すべての著者を表示する',
-		'get_category' => '"%s"カテゴリを表示する',
+		'get_category' => '“%s”カテゴリを表示する',
 		'get_favorite' => 'お気に入りの著者を表示する',
-		'get_feed' => '"%s"フィードを表示する',
+		'get_feed' => '“%s”フィードを表示する',
 		'name' => '名前',
 		'no_filter' => 'フィルターはありません',
 		'number' => 'クエリ n°%d',
 		'order_asc' => '古い著者を最初に表示する',
 		'order_desc' => '新しい著者を最初に表示する',
-		'search' => '"%s"で検索する',
+		'search' => '“%s”で検索する',
 		'state_0' => 'すべての記事を表示する',
 		'state_1' => '既読の記事を表示する',
 		'state_2' => '未読の記事を表示する',
@@ -178,7 +186,7 @@ return array(
 			'view' => 'ビュー',
 		),
 		'hide_read_feeds' => 'カテゴリーを非表示 & 未読の記事がないフィード ("すべてに既読を付ける”では適用しません)',
-		'img_with_lazyload' => '"lazy load"を写真の読み込み時に使う',
+		'img_with_lazyload' => '<em>lazy load</em>を写真の読み込み時に使う',
 		'jump_next' => '次の未読の姉妹記事へ移る (フィードあるいはカテゴリー)',
 		'mark_updated_article_unread' => '更新された記事を未読とする',
 		'number_divided_when_reader' => 'reading viewを二分割する',

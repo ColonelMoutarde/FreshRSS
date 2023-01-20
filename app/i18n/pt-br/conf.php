@@ -32,6 +32,7 @@ return array(
 	),
 	'display' => array(
 		'_' => 'Exibição',
+		'darkMode' => 'Automatic dark mode (beta)',	// TODO
 		'icon' => array(
 			'bottom_line' => 'Linha inferior',
 			'display_authors' => 'Autores',
@@ -48,7 +49,13 @@ return array(
 			'timeout' => 'Notificação em HTML5 de timeout',
 		),
 		'show_nav_buttons' => 'Mostrar botões de navegação',
-		'theme' => 'Tema',
+		'theme' => array(
+			'_' => 'Tema',
+			'deprecated' => array(
+				'_' => 'Deprecated',	// TODO
+				'description' => 'This theme is no longer supported and will be not available anymore in a <a href="https://freshrss.github.io/FreshRSS/en/users/05_Configuration.html#theme" target="_blank">future release of FreshRSS</a>',	// TODO
+			),
+		),
 		'theme_not_available' => 'O tema “%s” não está mais disponível. Por favor escolha outro tema.',
 		'thumbnail' => array(
 			'label' => 'Miniatura',
@@ -57,6 +64,7 @@ return array(
 			'portrait' => 'Modo retrato',
 			'square' => 'Modo quadrado',
 		),
+		'timezone' => 'Time zone',	// TODO
 		'title' => 'Exibição',
 		'width' => array(
 			'content' => 'Largura do conteúdo',
@@ -102,19 +110,19 @@ return array(
 			'order' => 'Ordenar por data',
 			'search' => 'Expressão',
 			'state' => 'Estado',
-			'tags' => 'Exibir por tag',
+			'tags' => 'Exibir por tag',	// DIRTY
 			'type' => 'Tipo',
 		),
 		'get_all' => 'Mostrar todos os artigos',
-		'get_category' => 'Visualizar "%s" categoria',
+		'get_category' => 'Visualizar “%s” categoria',
 		'get_favorite' => 'Visualizar artigos favoritos',
-		'get_feed' => 'Visualizar "%s" feed',
+		'get_feed' => 'Visualizar “%s” feed',
 		'name' => 'Nome',
 		'no_filter' => 'Sem filtro',
 		'number' => 'Query n°%d',	// IGNORE
 		'order_asc' => 'Exibir artigos mais antigos primeiro',
 		'order_desc' => 'Exibir artigos mais novos primeiro',
-		'search' => 'Busca por "%s"',
+		'search' => 'Busca por “%s”',
 		'state_0' => 'Exibir todos os artigos',
 		'state_1' => 'Exibir artigos lidos',
 		'state_2' => 'Exibir artigos não lidos',
@@ -135,7 +143,7 @@ return array(
 	),
 	'reading' => array(
 		'_' => 'Leitura',
-		'after_onread' => 'Depois de "marcar todos como lido",',
+		'after_onread' => 'Depois de “marcar todos como lido”,',
 		'always_show_favorites' => 'Mostrar todos os artivos nos favoritos por padrão',
 		'article' => array(
 			'authors_date' => array(
@@ -166,7 +174,7 @@ return array(
 		'articles_per_page' => 'Número de artigos por página',
 		'auto_load_more' => 'Carregar mais artigos no final da página',
 		'auto_remove_article' => 'Esconder artigos depois de lidos',
-		'confirm_enabled' => 'Exibir uma caixa de diálogo de confirmação quando acionar "marcar todos como lido"',
+		'confirm_enabled' => 'Exibir uma caixa de diálogo de confirmação quando acionar “marcar todos como lido”',
 		'display_articles_unfolded' => 'Mostrar artigos abertos por padrão',
 		'display_categories_unfolded' => 'Categorias abertas',
 		'headline' => array(
@@ -177,8 +185,8 @@ return array(
 			'misc' => 'Diversos',
 			'view' => 'Visualização',
 		),
-		'hide_read_feeds' => 'Esconder categorias e feeds com nenhum artigo não lido (não funciona com a configuração "Mostrar todos os artigos”)',
-		'img_with_lazyload' => 'Utilizar o modo "lazy load" para carregar as imagens',
+		'hide_read_feeds' => 'Esconder categorias e feeds com nenhum artigo não lido (não funciona com a configuração “Mostrar todos os artigos”)',
+		'img_with_lazyload' => 'Utilizar o modo <em>lazy load</em> para carregar as imagens',
 		'jump_next' => 'Vá para o próximo irmão não lido (feed ou categoria)',
 		'mark_updated_article_unread' => 'Marcar artigos atualizados como não lidos',
 		'number_divided_when_reader' => 'Dividido por 2 no modo de leitura .',

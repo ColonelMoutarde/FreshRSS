@@ -57,6 +57,11 @@ function classAutoloader($class) {
 		$base_dir = LIB_PATH . '/phpgt/cssxpath/src/';
 		$relative_class_name = substr($class, strlen($prefix));
 		require $base_dir . str_replace('\\', '/', $relative_class_name) . '.php';
+	} elseif (str_starts_with($class, 'marienfressinaud\\LibOpml\\')) {
+		$prefix = 'marienfressinaud\\LibOpml\\';
+		$base_dir = LIB_PATH . '/marienfressinaud/lib_opml/src/LibOpml/';
+		$relative_class_name = substr($class, strlen($prefix));
+		require $base_dir . str_replace('\\', '/', $relative_class_name) . '.php';
 	} elseif (str_starts_with($class, 'PHPMailer\\PHPMailer\\')) {
 		$prefix = 'PHPMailer\\PHPMailer\\';
 		$base_dir = LIB_PATH . '/phpmailer/phpmailer/src/';
@@ -221,6 +226,31 @@ function html_only_entity_decode($text): string {
 		));
 	}
 	return $text == '' ? '' : strtr($text, $htmlEntitiesOnly);
+}
+
+/**
+ * Remove passwords in FreshRSS logs.
+ * See also ../cli/sensitive-log.sh for Web server logs.
+ * @param array<string,mixed>|string $log
+ * @return array<string,mixed>|string
+ */
+function sensitive_log($log) {
+	if (is_array($log)) {
+		foreach ($log as $k => $v) {
+			if (in_array($k, ['api_key', 'Passwd', 'T'])) {
+				$log[$k] = '██';
+			} else {
+				$log[$k] = sensitive_log($v);
+			}
+		}
+	} elseif (is_string($log)) {
+		$log = preg_replace([
+				'/\b(auth=.*?\/)[^&]+/i',
+				'/\b(Passwd=)[^&]+/i',
+				'/\b(Authorization)[^&]+/i',
+			], '$1█', $log);
+	}
+	return $log;
 }
 
 /**
@@ -696,13 +726,13 @@ function check_install_php() {
 function check_install_files() {
 	return array(
 		// @phpstan-ignore-next-line
-		'data' => DATA_PATH && is_writable(DATA_PATH),
+		'data' => DATA_PATH && touch(DATA_PATH . '/index.html'),	// is_writable() is not reliable for a folder on NFS
 		// @phpstan-ignore-next-line
-		'cache' => CACHE_PATH && is_writable(CACHE_PATH),
+		'cache' => CACHE_PATH && touch(CACHE_PATH . '/index.html'),
 		// @phpstan-ignore-next-line
-		'users' => USERS_PATH && is_writable(USERS_PATH),
-		'favicons' => is_writable(DATA_PATH . '/favicons'),
-		'tokens' => is_writable(DATA_PATH . '/tokens'),
+		'users' => USERS_PATH && touch(USERS_PATH . '/index.html'),
+		'favicons' => touch(DATA_PATH . '/favicons/index.html'),
+		'tokens' => touch(DATA_PATH . '/tokens/index.html'),
 	);
 }
 

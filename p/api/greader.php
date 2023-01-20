@@ -10,10 +10,10 @@ Server-side API compatible with Google Reader API layer 2
 
 == Documentation ==
 * http://code.google.com/p/pyrfeed/wiki/GoogleReaderAPI
-* http://web.archive.org/web/20130718025427/http://undoc.in/
+* https://web.archive.org/web/20130718025427/http://undoc.in/
 * http://ranchero.com/downloads/GoogleReaderAPI-2009.pdf
 * http://code.google.com/p/google-reader-api/w/list
-* http://blog.martindoms.com/2009/10/16/using-the-google-reader-api-part-2/
+* https://web.archive.org/web/20210126115837/https://blog.martindoms.com/2009/10/16/using-the-google-reader-api-part-2/
 * https://github.com/noinnion/newsplus/blob/master/extensions/GoogleReaderCloneExtension/src/com/noinnion/android/newsplus/extension/google_reader/GoogleReaderClient.java
 * https://github.com/ericmann/gReader-Library/blob/master/greader.class.php
 * https://github.com/devongovett/reader
@@ -97,27 +97,29 @@ function debugInfo() {
 		}
 	}
 	global $ORIGINAL_INPUT;
-	return print_r(
-		array(
+	$log = sensitive_log([
 			'date' => date('c'),
 			'headers' => $ALL_HEADERS,
 			'_SERVER' => $_SERVER,
 			'_GET' => $_GET,
 			'_POST' => $_POST,
 			'_COOKIE' => $_COOKIE,
-			'INPUT' => $ORIGINAL_INPUT
-		), true);
+			'INPUT' => $ORIGINAL_INPUT,
+		]);
+	return print_r($log, true);
 }
 
 function badRequest() {
-	Minz_Log::warning('badRequest() ' . debugInfo(), API_LOG);
+	Minz_Log::warning('GReader API: ' . __METHOD__, API_LOG);
+	Minz_Log::debug('badRequest() ' . debugInfo(), API_LOG);
 	header('HTTP/1.1 400 Bad Request');
 	header('Content-Type: text/plain; charset=UTF-8');
 	die('Bad Request!');
 }
 
 function unauthorized() {
-	Minz_Log::warning('unauthorized() ' . debugInfo(), API_LOG);
+	Minz_Log::warning('GReader API: ' . __METHOD__, API_LOG);
+	Minz_Log::debug('unauthorized() ' . debugInfo(), API_LOG);
 	header('HTTP/1.1 401 Unauthorized');
 	header('Content-Type: text/plain; charset=UTF-8');
 	header('Google-Bad-Token: true');
@@ -125,21 +127,24 @@ function unauthorized() {
 }
 
 function notImplemented() {
-	Minz_Log::warning('notImplemented() ' . debugInfo(), API_LOG);
+	Minz_Log::warning('GReader API: ' . __METHOD__, API_LOG);
+	Minz_Log::debug('notImplemented() ' . debugInfo(), API_LOG);
 	header('HTTP/1.1 501 Not Implemented');
 	header('Content-Type: text/plain; charset=UTF-8');
 	die('Not Implemented!');
 }
 
 function serviceUnavailable() {
-	Minz_Log::warning('serviceUnavailable() ' . debugInfo(), API_LOG);
+	Minz_Log::warning('GReader API: ' . __METHOD__, API_LOG);
+	Minz_Log::debug('serviceUnavailable() ' . debugInfo(), API_LOG);
 	header('HTTP/1.1 503 Service Unavailable');
 	header('Content-Type: text/plain; charset=UTF-8');
 	die('Service Unavailable!');
 }
 
 function checkCompatibility() {
-	Minz_Log::warning('checkCompatibility() ' . debugInfo(), API_LOG);
+	Minz_Log::warning('GReader API: ' . __METHOD__, API_LOG);
+	Minz_Log::debug('checkCompatibility() ' . debugInfo(), API_LOG);
 	header('Content-Type: text/plain; charset=UTF-8');
 	if (PHP_INT_SIZE < 8 && !function_exists('gmp_init')) {
 		die('FAIL 64-bit or GMP extension! Wrong PHP configuration.');
@@ -172,8 +177,7 @@ function authorizationToUser() {
 				if ($headerAuthX[1] === sha1(FreshRSS_Context::$system_conf->salt . $user . FreshRSS_Context::$user_conf->apiPasswordHash)) {
 					return $user;
 				} else {
-					Minz_Log::warning('Invalid API authorisation for user ' . $user . ': ' . $headerAuthX[1], API_LOG);
-					Minz_Log::warning('Invalid API authorisation for user ' . $user . ': ' . $headerAuthX[1]);
+					Minz_Log::warning('Invalid API authorisation for user ' . $user);
 					unauthorized();
 				}
 			} else {
@@ -185,7 +189,7 @@ function authorizationToUser() {
 }
 
 function clientLogin($email, $pass) {
-	//http://web.archive.org/web/20130604091042/http://undoc.in/clientLogin.html
+	//https://web.archive.org/web/20130604091042/http://undoc.in/clientLogin.html
 	if (FreshRSS_user_Controller::checkUsername($email)) {
 		FreshRSS_Context::initUser($email);
 		if (FreshRSS_Context::$user_conf == null) {
@@ -878,6 +882,10 @@ function markAllAsRead($streamId, $olderThanId) {
 	$entryDAO = FreshRSS_Factory::createEntryDao();
 	if (strpos($streamId, 'feed/') === 0) {
 		$f_id = basename($streamId);
+		if (!ctype_digit($f_id)) {
+			badRequest();
+		}
+		$f_id = intval($f_id);
 		$entryDAO->markReadFeed($f_id, $olderThanId);
 	} elseif (strpos($streamId, 'user/-/label/') === 0) {
 		$c_name = substr($streamId, 13);
@@ -891,12 +899,15 @@ function markAllAsRead($streamId, $olderThanId) {
 			$tag = $tagDAO->searchByName($c_name);
 			if ($tag != null) {
 				$entryDAO->markReadTag($tag->id(), $olderThanId);
+			} else {
+				badRequest();
 			}
 		}
 	} elseif ($streamId === 'user/-/state/com.google/reading-list') {
 		$entryDAO->markReadEntries($olderThanId, false, -1);
+	} else {
+		badRequest();
 	}
-
 	exit('OK');
 }
 
@@ -1105,10 +1116,10 @@ if ($pathInfos[1] === 'accounts') {
 		case 'mark-all-as-read':
 			$token = isset($_POST['T']) ? trim($_POST['T']) : '';
 			checkToken(FreshRSS_Context::$user_conf, $token);
-			$streamId = $_POST['s'];	//StreamId
+			$streamId = $_POST['s'] ?? '';
 			$ts = isset($_POST['ts']) ? $_POST['ts'] : '0';	//Older than timestamp in nanoseconds
 			if (!ctype_digit($ts)) {
-				$ts = '0';
+				badRequest();
 			}
 			markAllAsRead($streamId, $ts);
 			break;

@@ -129,14 +129,12 @@ input.extend {
 	border-radius: 3px;
 
 	&::after {
-		content: "";
 		display: block;
 		clear: both;
 	}
 
 	.group-name {
 		padding: 10px 0;
-		text-align: right;
 	}
 
 	.group-controls {
